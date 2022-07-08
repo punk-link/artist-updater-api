@@ -1,7 +1,6 @@
 package startup
 
 import (
-	"main/routers"
 	"main/utils"
 
 	"github.com/getsentry/sentry-go"
@@ -24,7 +23,7 @@ func Configure() *gin.Engine {
 	app.Use(sentrygin.New(sentrygin.Options{
 		Repanic: true,
 	}))
-	routers.SetupRouters(app)
+	SetupRouters(app)
 
 	return app
 }

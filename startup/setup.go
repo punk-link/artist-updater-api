@@ -1,4 +1,4 @@
-package routers
+package startup
 
 import (
 	"main/controllers"
