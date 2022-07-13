@@ -10,17 +10,19 @@ import (
 )
 
 func AddManager(ctx *gin.Context) {
+	currentManager, err := getCurrentManager()
+	if err != nil {
+		Forbidden(ctx, err)
+		return
+	}
+
 	var manager organizations.Manager
 	if err := ctx.ShouldBindJSON(&manager); err != nil {
 		UnprocessableEntity(ctx, err)
 		return
 	}
 
-	// TODO: add the current manager
-	result, err := service.AddManager(organizations.Manager{
-		Id:             1,
-		OrganizationId: 1,
-	}, manager)
+	result, err := service.AddManager(currentManager, manager)
 	OkOrBadRequest(ctx, result, err)
 }
 
@@ -47,8 +49,13 @@ func GetManager(ctx *gin.Context) {
 }
 
 func GetManagers(ctx *gin.Context) {
-	// TODO: put an actual manager here
-	result := service.GetOrganizationManagers(1)
+	currentManager, err := getCurrentManager()
+	if err != nil {
+		Forbidden(ctx, err)
+		return
+	}
+
+	result := service.GetOrganizationManagers(currentManager.OrganizationId)
 	Ok(ctx, result)
 }
 

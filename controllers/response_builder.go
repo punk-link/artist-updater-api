@@ -27,8 +27,14 @@ func Ok[T any](ctx *gin.Context, result T) {
 	})
 }
 
-func UnprocessableEntity(ctx *gin.Context, binder error) {
+func Forbidden(ctx *gin.Context, err error) {
+	ctx.JSON(http.StatusForbidden, gin.H{
+		"message": err.Error(),
+	})
+}
+
+func UnprocessableEntity(ctx *gin.Context, err error) {
 	ctx.JSON(http.StatusUnprocessableEntity, gin.H{
-		"message": binder.Error(),
+		"message": err.Error(),
 	})
 }
